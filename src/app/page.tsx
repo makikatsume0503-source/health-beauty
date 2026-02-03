@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Home() {
   return (
     <main style={{
@@ -30,12 +32,16 @@ export default function Home() {
         </p>
 
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-          <button className="btn btn-primary" style={{ padding: '1rem 3rem', fontSize: '1.1rem' }}>
-            はじめる
-          </button>
-          <button className="btn btn-outline" style={{ padding: '1rem 3rem', fontSize: '1.1rem' }}>
-            ログイン
-          </button>
+          <Link href="/signup">
+            <button className="btn btn-primary" style={{ padding: '1rem 3rem', fontSize: '1.1rem' }}>
+              はじめる
+            </button>
+          </Link>
+          <Link href="/login">
+            <button className="btn btn-outline" style={{ padding: '1rem 3rem', fontSize: '1.1rem' }}>
+              ログイン
+            </button>
+          </Link>
         </div>
       </div>
 
