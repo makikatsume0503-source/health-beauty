@@ -34,7 +34,7 @@ export default function Home() {
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
           <Link href="/signup">
             <button className="btn btn-primary" style={{ padding: '1rem 3rem', fontSize: '1.1rem' }}>
-              はじめる
+              新規登録
             </button>
           </Link>
           <Link href="/login">

@@ -9,7 +9,11 @@ import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 import Link from 'next/link';
 
-export default function DailyLogPage() {
+interface DailyLogProps {
+    targetUserId?: string;
+}
+
+export default function DailyLogPage({ targetUserId }: DailyLogProps) {
     const params = useParams();
     const dateStr = params.date as string;
     const router = useRouter();
@@ -31,12 +35,15 @@ export default function DailyLogPage() {
                 // Fake guest login if needed or redirect
             }
 
-            const uid = auth.currentUser?.uid;
-            setUserId(uid || 'guest');
+            const currentUserUid = auth.currentUser?.uid;
+            // Use targetUserId if provided (for admin), otherwise use current user
+            const effectiveUid = targetUserId || currentUserUid;
 
-            if (uid) {
+            setUserId(effectiveUid || 'guest');
+
+            if (effectiveUid && effectiveUid !== 'guest') {
                 try {
-                    const docRef = doc(db, 'users', uid, 'daily_logs', dateStr);
+                    const docRef = doc(db, 'users', effectiveUid, 'daily_logs', dateStr);
                     const docSnap = await getDoc(docRef);
                     if (docSnap.exists()) {
                         const data = docSnap.data();
