@@ -46,6 +46,7 @@ export default function SignupPage() {
             }
 
             router.push('/dashboard');
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             console.error(err);
             if (err.code === 'auth/email-already-in-use') {
