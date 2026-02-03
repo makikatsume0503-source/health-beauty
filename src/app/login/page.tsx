@@ -25,9 +25,11 @@ export default function LoginPage() {
             await signInWithEmailAndPassword(auth, email, password);
             router.push('/dashboard');
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             console.error(err);
-            setError('メールアドレスまたはパスワードが正しくありません。');
+            // DEBUG: Show actual error to user
+            setError(`ログイン失敗: ${err.message} (${err.code})`);
         } finally {
             setLoading(false);
         }
@@ -37,9 +39,10 @@ export default function LoginPage() {
         try {
             await signInWithPopup(auth, googleProvider);
             router.push('/dashboard');
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
-            setError('Googleログインに失敗しました。');
+            // DEBUG: Show actual error to user
+            setError(`Googleログイン失敗: ${err.message} (${err.code})`);
         }
     };
 

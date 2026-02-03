@@ -54,7 +54,8 @@ export default function SignupPage() {
             } else if (err.code === 'auth/weak-password') {
                 setError('パスワードは6文字以上で設定してください。');
             } else {
-                setError('登録中にエラーが発生しました。もう一度お試しください。');
+                // DEBUG: Show actual error to user
+                setError(`登録エラー: ${err.message} (${err.code})`);
             }
         } finally {
             setLoading(false);
@@ -80,9 +81,11 @@ export default function SignupPage() {
             }
 
             router.push('/dashboard');
-        } catch (err) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (err: any) {
             console.error(err);
-            setError('Google登録に失敗しました。');
+            // DEBUG: Show actual error to user
+            setError(`Google登録エラー: ${err.message} (${err.code})`);
         }
     };
 
