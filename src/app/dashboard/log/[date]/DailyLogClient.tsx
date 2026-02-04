@@ -225,8 +225,13 @@ export default function DailyLogPage({ targetUserId }: DailyLogProps) {
                                         onChange={(e) => setCondition({ ...condition, physical: e.target.value })}
                                         style={{ width: '100%' }}
                                     />
-                                    <div className="flex justify-between text-xs text-gray-500 font-bold px-1 mt-1">
-                                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                                    <div className="flex justify-between px-1.5 mt-1">
+                                        {[1, 2, 3, 4, 5].map((num) => (
+                                            <div key={num} className="flex flex-col items-center">
+                                                <div className="h-1.5 w-px bg-gray-400 mb-0.5"></div>
+                                                <span className="text-xs font-bold text-gray-500">{num}</span>
+                                            </div>
+                                        ))}
                                     </div>
                                     <div className="flex justify-between text-xs text-gray-400 px-1">
                                         <span>悪い</span><span></span><span>普通</span><span></span><span>良い</span>
@@ -242,8 +247,13 @@ export default function DailyLogPage({ targetUserId }: DailyLogProps) {
                                         onChange={(e) => setCondition({ ...condition, mental: e.target.value })}
                                         style={{ width: '100%' }}
                                     />
-                                    <div className="flex justify-between text-xs text-gray-500 font-bold px-1 mt-1">
-                                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                                    <div className="flex justify-between px-1.5 mt-1">
+                                        {[1, 2, 3, 4, 5].map((num) => (
+                                            <div key={num} className="flex flex-col items-center">
+                                                <div className="h-1.5 w-px bg-gray-400 mb-0.5"></div>
+                                                <span className="text-xs font-bold text-gray-500">{num}</span>
+                                            </div>
+                                        ))}
                                     </div>
                                     <div className="flex justify-between text-xs text-gray-400 px-1">
                                         <span>落ち込む</span><span></span><span>普通</span><span></span><span>Happy!</span>
