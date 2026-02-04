@@ -2,68 +2,23 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { createUserWithEmailAndPassword, updateProfile, signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { auth, db, googleProvider } from '@/lib/firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 
 export default function SignupPage() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const handleSignup = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleGoogleSignup = async () => {
         setLoading(true);
         setError('');
-
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-
-            // Update display name
-            await updateProfile(user, {
-                displayName: name
-            });
-
-            // Create user document in Firestore
-            try {
-                await setDoc(doc(db, 'users', user.uid), {
-                    uid: user.uid,
-                    name: name,
-                    email: email,
-                    createdAt: new Date()
-                });
-            } catch (dbError) {
-                console.error("Firestore error:", dbError);
-                // Non-blocking error for now, purely auth can still work
-            }
-
-            router.push('/dashboard');
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (err: any) {
-            console.error(err);
-            if (err.code === 'auth/email-already-in-use') {
-                setError('このメールアドレスは既に使用されています。');
-            } else if (err.code === 'auth/weak-password') {
-                setError('パスワードは6文字以上で設定してください。');
-            } else {
-                // DEBUG: Show actual error to user
-                setError(`登録エラー: ${err.message} (${err.code})`);
-            }
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleGoogleSignup = async () => {
-        try {
+            await setPersistence(auth, browserLocalPersistence);
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
 
@@ -86,6 +41,8 @@ export default function SignupPage() {
             console.error(err);
             // DEBUG: Show actual error to user
             setError(`Google登録エラー: ${err.message} (${err.code})`);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -108,58 +65,29 @@ export default function SignupPage() {
                     新規登録
                 </h1>
 
-                <form onSubmit={handleSignup}>
-                    <Input
-                        label="お名前（ニックネーム可）"
-                        type="text"
-                        placeholder="健康 花子"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                        style={{ marginBottom: '1.5rem' }}
-                    />
+                {error && (
+                    <div style={{ color: 'var(--error)', marginBottom: '1rem', textAlign: 'center' }}>
+                        {error}
+                    </div>
+                )}
 
-                    <Input
-                        label="メールアドレス"
-                        type="email"
-                        placeholder="example@health-beauty.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        style={{ marginBottom: '1.5rem' }}
-                    />
-
-                    <Input
-                        label="パスワード"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        minLength={6}
-                        style={{ marginBottom: '2rem' }}
-                    />
-
-                    {error && (
-                        <div style={{ color: 'var(--error)', marginBottom: '1rem', textAlign: 'center' }}>
-                            {error}
-                        </div>
-                    )}
-
-                    <Button
-                        type="submit"
-                        className="w-full"
-                        style={{ width: '100%', marginBottom: '1.5rem', background: 'var(--secondary)' }}
-                        isLoading={loading}
-                    >
-                        登録して始める
-                    </Button>
-
+                <div className="flex flex-col gap-4">
                     <Button
                         type="button"
-                        variant="ghost"
-                        className="w-full border border-gray-300"
-                        style={{ width: '100%', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                        className="w-full"
+                        style={{
+                            width: '100%',
+                            marginBottom: '1.5rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '8px',
+                            background: 'white',
+                            color: '#333',
+                            border: '1px solid #ccc'
+                        }}
                         onClick={handleGoogleSignup}
+                        isLoading={loading}
                     >
                         <svg width="18" height="18" viewBox="0 0 18 18">
                             <path d="M17.64 9.2c0-.637-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4" />
@@ -169,14 +97,14 @@ export default function SignupPage() {
                         </svg>
                         Googleで登録
                     </Button>
+                </div>
 
-                    <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>
-                        すでにアカウントをお持ちの方は<br />
-                        <Link href="/login" style={{ color: 'var(--secondary)', textDecoration: 'underline' }}>
-                            ログインはこちら
-                        </Link>
-                    </div>
-                </form>
+                <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>
+                    すでにアカウントをお持ちの方は<br />
+                    <Link href="/login" style={{ color: 'var(--secondary)', textDecoration: 'underline' }}>
+                        ログインはこちら
+                    </Link>
+                </div>
             </Card>
         </main>
     );

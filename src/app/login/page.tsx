@@ -2,47 +2,30 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { auth, googleProvider } from '@/lib/firebase';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 
 export default function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleGoogleLogin = async () => {
         setLoading(true);
         setError('');
-
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            router.push('/dashboard');
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (err: any) {
-            console.error(err);
-            // DEBUG: Show actual error to user
-            setError(`ログイン失敗: ${err.message} (${err.code})`);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleGoogleLogin = async () => {
-        try {
+            await setPersistence(auth, browserLocalPersistence);
             await signInWithPopup(auth, googleProvider);
             router.push('/dashboard');
         } catch (err: any) {
             console.error(err);
             // DEBUG: Show actual error to user
             setError(`Googleログイン失敗: ${err.message} (${err.code})`);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -65,47 +48,29 @@ export default function LoginPage() {
                     ログイン
                 </h1>
 
-                <form onSubmit={handleLogin}>
-                    <Input
-                        label="メールアドレス"
-                        type="email"
-                        placeholder="example@health-beauty.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        style={{ marginBottom: '1.5rem' }}
-                    />
+                {error && (
+                    <div style={{ color: 'var(--error)', marginBottom: '1rem', textAlign: 'center' }}>
+                        {error}
+                    </div>
+                )}
 
-                    <Input
-                        label="パスワード"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        style={{ marginBottom: '2rem' }}
-                    />
-
-                    {error && (
-                        <div style={{ color: 'var(--error)', marginBottom: '1rem', textAlign: 'center' }}>
-                            {error}
-                        </div>
-                    )}
-
-                    <Button
-                        type="submit"
-                        className="w-full"
-                        style={{ width: '100%', marginBottom: '1rem' }}
-                        isLoading={loading}
-                    >
-                        ログインする
-                    </Button>
-
+                <div className="flex flex-col gap-4">
                     <Button
                         type="button"
-                        variant="ghost"
-                        className="w-full border border-gray-300"
-                        style={{ width: '100%', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                        className="w-full"
+                        style={{
+                            width: '100%',
+                            marginBottom: '1rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '8px',
+                            background: 'white',
+                            color: '#333',
+                            border: '1px solid #ccc'
+                        }}
                         onClick={handleGoogleLogin}
+                        isLoading={loading}
                     >
                         <svg width="18" height="18" viewBox="0 0 18 18">
                             <path d="M17.64 9.2c0-.637-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4" />
@@ -125,14 +90,14 @@ export default function LoginPage() {
                     >
                         ゲストとして試す (Preview)
                     </Button>
+                </div>
 
-                    <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>
-                        アカウントをお持ちでない方は<br />
-                        <Link href="/signup" style={{ color: 'var(--primary-dark)', textDecoration: 'underline' }}>
-                            新規登録はこちら
-                        </Link>
-                    </div>
-                </form>
+                <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>
+                    アカウントをお持ちでない方は<br />
+                    <Link href="/signup" style={{ color: 'var(--primary-dark)', textDecoration: 'underline' }}>
+                        新規登録はこちら
+                    </Link>
+                </div>
             </Card>
         </main>
     );
