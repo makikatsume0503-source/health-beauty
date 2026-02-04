@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 import Link from 'next/link';
+import VoiceInputButton from '@/components/VoiceInputButton';
 
 interface DailyLogProps {
     targetUserId?: string;
@@ -114,7 +115,10 @@ export default function DailyLogPage({ targetUserId }: DailyLogProps) {
                     </h2>
                     <div className="grid gap-4">
                         <div>
-                            <label className="block text-sm font-medium mb-1 text-gray-600">朝食</label>
+                            <div className="flex justify-between items-center mb-1">
+                                <label className="block text-sm font-medium text-gray-600">朝食</label>
+                                <VoiceInputButton onTranscript={(text) => setMeals(prev => ({ ...prev, breakfast: prev.breakfast + (prev.breakfast ? ' ' : '') + text }))} />
+                            </div>
                             <textarea
                                 className="w-full p-3 border rounded-md"
                                 rows={2}
@@ -124,112 +128,136 @@ export default function DailyLogPage({ targetUserId }: DailyLogProps) {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1 text-gray-600">昼食</label>
-                            <textarea
-                                className="w-full p-3 border rounded-md"
-                                rows={2}
-                                value={meals.lunch}
-                                onChange={(e) => setMeals({ ...meals, lunch: e.target.value })}
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1 text-gray-600">夕食</label>
-                            <textarea
-                                className="w-full p-3 border rounded-md"
-                                rows={2}
-                                value={meals.dinner}
-                                onChange={(e) => setMeals({ ...meals, dinner: e.target.value })}
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1 text-gray-600">間食</label>
-                            <textarea
-                                className="w-full p-3 border rounded-md"
-                                rows={2}
-                                value={meals.snack}
-                                onChange={(e) => setMeals({ ...meals, snack: e.target.value })}
-                            />
-                        </div>
-                    </div>
-                </Card>
+                            <div>
+                                <div className="flex justify-between items-center mb-1">
+                                    <label className="block text-sm font-medium text-gray-600">昼食</label>
+                                    <VoiceInputButton onTranscript={(text) => setMeals(prev => ({ ...prev, lunch: prev.lunch + (prev.lunch ? ' ' : '') + text }))} />
+                                </div>
+                                <textarea
+                                    className="w-full p-3 border rounded-md"
+                                    rows={2}
+                                    value={meals.lunch}
+                                    onChange={(e) => setMeals({ ...meals, lunch: e.target.value })}
+                                />
+                            </div>
+                            <div>
+                                <div>
+                                    <div className="flex justify-between items-center mb-1">
+                                        <label className="block text-sm font-medium text-gray-600">夕食</label>
+                                        <VoiceInputButton onTranscript={(text) => setMeals(prev => ({ ...prev, dinner: prev.dinner + (prev.dinner ? ' ' : '') + text }))} />
+                                    </div>
+                                    <textarea
+                                        className="w-full p-3 border rounded-md"
+                                        rows={2}
+                                        value={meals.dinner}
+                                        onChange={(e) => setMeals({ ...meals, dinner: e.target.value })}
+                                    />
+                                </div>
+                                <div>
+                                    <div>
+                                        <div className="flex justify-between items-center mb-1">
+                                            <label className="block text-sm font-medium text-gray-600">間食</label>
+                                            <VoiceInputButton onTranscript={(text) => setMeals(prev => ({ ...prev, snack: prev.snack + (prev.snack ? ' ' : '') + text }))} />
+                                        </div>
+                                        <textarea
+                                            className="w-full p-3 border rounded-md"
+                                            rows={2}
+                                            value={meals.snack}
+                                            onChange={(e) => setMeals({ ...meals, snack: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+                            </Card>
 
-                {/* Exercise Section */}
-                <Card className="mb-6">
-                    <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: 'var(--secondary)', borderBottom: '1px solid #eee', paddingBottom: '0.5rem', display: 'flex', alignItems: 'center' }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-                        </svg>
-                        運動
-                    </h2>
-                    <Input
-                        label="運動の内容"
-                        value={exercise.content}
-                        onChange={(e) => setExercise({ ...exercise, content: e.target.value })}
-                        placeholder="ウォーキング、ストレッチなど"
-                        style={{ marginBottom: '1rem' }}
-                    />
-                    <Input
-                        label="時間 (分)"
-                        type="number"
-                        value={exercise.duration}
-                        onChange={(e) => setExercise({ ...exercise, duration: e.target.value })}
-                        style={{ marginBottom: '1rem' }}
-                    />
-                </Card>
+                            {/* Exercise Section */}
+                            <Card className="mb-6">
+                                <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: 'var(--secondary)', borderBottom: '1px solid #eee', paddingBottom: '0.5rem', display: 'flex', alignItems: 'center' }}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                                    </svg>
+                                    運動
+                                </h2>
+                                <Input
+                                    label="運動の内容"
+                                    value={exercise.content}
+                                    onChange={(e) => setExercise({ ...exercise, content: e.target.value })}
+                                    placeholder="ウォーキング、ストレッチなど"
+                                    style={{ marginBottom: '1rem' }}
+                                />
+                                <div className="flex justify-end -mt-12 mb-4 mr-2 relative z-10">
+                                    <VoiceInputButton onTranscript={(text) => setExercise(prev => ({ ...prev, content: prev.content + (prev.content ? ' ' : '') + text }))} />
+                                </div>
+                                <Input
+                                    label="時間 (分)"
+                                    type="number"
+                                    value={exercise.duration}
+                                    onChange={(e) => setExercise({ ...exercise, duration: e.target.value })}
+                                    style={{ marginBottom: '1rem' }}
+                                />
+                            </Card>
 
-                {/* Condition Section */}
-                <Card className="mb-8">
-                    <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: '#BCAAA4', borderBottom: '1px solid #eee', paddingBottom: '0.5rem', display: 'flex', alignItems: 'center' }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                        </svg>
-                        体調・メンタル
-                    </h2>
+                            {/* Condition Section */}
+                            <Card className="mb-8">
+                                <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: '#BCAAA4', borderBottom: '1px solid #eee', paddingBottom: '0.5rem', display: 'flex', alignItems: 'center' }}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                                    </svg>
+                                    体調・メンタル
+                                </h2>
 
-                    <div style={{ marginBottom: '1.5rem' }}>
-                        <label className="block text-sm font-medium mb-2 text-gray-600">今日の体調 (1:悪い - 5:良い)</label>
-                        <input
-                            type="range"
-                            min="1" max="5"
-                            value={condition.physical}
-                            onChange={(e) => setCondition({ ...condition, physical: e.target.value })}
-                            style={{ width: '100%' }}
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                            <span>悪い</span><span>普通</span><span>良い</span>
-                        </div>
-                    </div>
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    <label className="block text-sm font-medium mb-2 text-gray-600">今日の体調 (1:悪い - 5:良い)</label>
+                                    <input
+                                        type="range"
+                                        min="1" max="5"
+                                        value={condition.physical}
+                                        onChange={(e) => setCondition({ ...condition, physical: e.target.value })}
+                                        style={{ width: '100%' }}
+                                    />
+                                    <div className="flex justify-between text-xs text-gray-500 font-bold px-1 mt-1">
+                                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                                    </div>
+                                    <div className="flex justify-between text-xs text-gray-400 px-1">
+                                        <span>悪い</span><span></span><span>普通</span><span></span><span>良い</span>
+                                    </div>
+                                </div>
 
-                    <div style={{ marginBottom: '1.5rem' }}>
-                        <label className="block text-sm font-medium mb-2 text-gray-600">今日の気分 (1:落ち込む - 5:ハッピー)</label>
-                        <input
-                            type="range"
-                            min="1" max="5"
-                            value={condition.mental}
-                            onChange={(e) => setCondition({ ...condition, mental: e.target.value })}
-                            style={{ width: '100%' }}
-                        />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
-                            <span>落ち込む</span><span>普通</span><span>Happy!</span>
-                        </div>
-                    </div>
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    <label className="block text-sm font-medium mb-2 text-gray-600">今日の気分 (1:落ち込む - 5:ハッピー)</label>
+                                    <input
+                                        type="range"
+                                        min="1" max="5"
+                                        value={condition.mental}
+                                        onChange={(e) => setCondition({ ...condition, mental: e.target.value })}
+                                        style={{ width: '100%' }}
+                                    />
+                                    <div className="flex justify-between text-xs text-gray-500 font-bold px-1 mt-1">
+                                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                                    </div>
+                                    <div className="flex justify-between text-xs text-gray-400 px-1">
+                                        <span>落ち込む</span><span></span><span>普通</span><span></span><span>Happy!</span>
+                                    </div>
+                                </div>
 
-                    <div>
-                        <label className="block text-sm font-medium mb-1 text-gray-600">ひとことメモ</label>
-                        <textarea
-                            className="w-full p-3 border rounded-md"
-                            rows={3}
-                            value={condition.notes}
-                            onChange={(e) => setCondition({ ...condition, notes: e.target.value })}
-                            placeholder="気になったこと、頑張ったことなど"
-                        />
-                    </div>
-                </Card>
+                                <div>
+                                    <div className="flex justify-between items-center mb-1">
+                                        <label className="block text-sm font-medium text-gray-600">ひとことメモ</label>
+                                        <VoiceInputButton onTranscript={(text) => setCondition(prev => ({ ...prev, notes: prev.notes + (prev.notes ? ' ' : '') + text }))} />
+                                    </div>
+                                    <textarea
+                                        className="w-full p-3 border rounded-md"
+                                        rows={3}
+                                        value={condition.notes}
+                                        onChange={(e) => setCondition({ ...condition, notes: e.target.value })}
+                                        placeholder="気になったこと、頑張ったことなど"
+                                    />
+                                </div>
+                            </Card>
 
-                <Button type="submit" className="w-full py-4 text-lg shadow-lg" isLoading={saving}>
-                    保存する
-                </Button>
-            </form>
-        </main>
-    );
+                            <Button type="submit" className="w-full py-4 text-lg shadow-lg" isLoading={saving}>
+                                保存する
+                            </Button>
+                        </form>
+                    </main>
+                    );
 }
