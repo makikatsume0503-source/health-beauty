@@ -8,7 +8,7 @@ export default function Home() {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'linear-gradient(to bottom, var(--background), #FCE4EC)'
+      background: 'linear-gradient(to bottom, var(--background), #E0F7FA)' // Light blue gradient
     }}>
       <div className="container" style={{ textAlign: 'center' }}>
         <h1 style={{
