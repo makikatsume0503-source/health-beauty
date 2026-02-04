@@ -78,6 +78,17 @@ export default function DailyLogPage({ targetUserId }: DailyLogProps) {
                     condition,
                     updatedAt: serverTimestamp()
                 }, { merge: true });
+
+                // Also update the user's top-level document with latest condition for Admin alerts
+                const userRef = doc(db, 'users', userId);
+                await setDoc(userRef, {
+                    lastCondition: {
+                        date: dateStr,
+                        physical: condition.physical,
+                        mental: condition.mental,
+                        updatedAt: serverTimestamp()
+                    }
+                }, { merge: true });
             }
             alert('保存しました！');
             router.push('/dashboard');
