@@ -27,7 +27,7 @@ export default function Home() {
           marginLeft: 'auto',
           marginRight: 'auto'
         }}>
-          40代から始める、自分らしい健康生活。<br />
+          ミドルエイジから始める、自分らしい健康生活。<br />
           毎日の食事と運動を記録して、いつまでも輝くあなたへ。
         </p>
 

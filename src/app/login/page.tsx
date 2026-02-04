@@ -36,9 +36,13 @@ export default function LoginPage() {
             alignItems: 'center',
             justifyContent: 'center',
             padding: '1rem',
-            background: 'linear-gradient(to bottom, var(--background), #FCE4EC)'
+            background: 'linear-gradient(to bottom, var(--background), #E0F7FA)' // Light blue gradient
         }}>
             <Card className="w-full max-w-md p-8">
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/running_woman.png" alt="Running Woman" style={{ width: '120px', height: 'auto', opacity: 0.8 }} />
+                </div>
                 <h1 style={{
                     textAlign: 'center',
                     marginBottom: '2rem',
