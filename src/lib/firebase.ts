@@ -2,13 +2,14 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+// Hardcoded configuration to resolve environment variable issues on Vercel
 const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    apiKey: "AIzaSyD0hoNZx5LY-wbYDCR1nA5hJIPhP2gjzwE",
+    authDomain: "health-beauty-83533.firebaseapp.com",
+    projectId: "health-beauty-83533",
+    storageBucket: "health-beauty-83533.firebasestorage.app",
+    messagingSenderId: "215832110477",
+    appId: "1:215832110477:web:ea1808086541f778e7c9c4",
 };
 
 // Initialize Firebase
