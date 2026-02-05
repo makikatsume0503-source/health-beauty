@@ -222,11 +222,11 @@ export default function DailyLogPage({ targetUserId }: DailyLogProps) {
                             onChange={(e) => setCondition({ ...condition, physical: e.target.value })}
                             style={{ width: '100%' }}
                         />
-                        <div className="flex justify-between px-1.5 mt-1">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 4px', marginTop: '4px' }}>
                             {[1, 2, 3, 4, 5].map((num) => (
-                                <div key={num} className="flex flex-col items-center">
-                                    <div className="h-1.5 w-px bg-gray-400 mb-0.5"></div>
-                                    <span className="text-xs font-bold text-gray-500">{num}</span>
+                                <div key={num} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <div style={{ width: '1px', height: '6px', backgroundColor: '#9CA3AF', marginBottom: '2px' }}></div>
+                                    <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#6B7280' }}>{num}</span>
                                 </div>
                             ))}
                         </div>
@@ -244,11 +244,11 @@ export default function DailyLogPage({ targetUserId }: DailyLogProps) {
                             onChange={(e) => setCondition({ ...condition, mental: e.target.value })}
                             style={{ width: '100%' }}
                         />
-                        <div className="flex justify-between px-1.5 mt-1">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 4px', marginTop: '4px' }}>
                             {[1, 2, 3, 4, 5].map((num) => (
-                                <div key={num} className="flex flex-col items-center">
-                                    <div className="h-1.5 w-px bg-gray-400 mb-0.5"></div>
-                                    <span className="text-xs font-bold text-gray-500">{num}</span>
+                                <div key={num} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <div style={{ width: '1px', height: '6px', backgroundColor: '#9CA3AF', marginBottom: '2px' }}></div>
+                                    <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#6B7280' }}>{num}</span>
                                 </div>
                             ))}
                         </div>
