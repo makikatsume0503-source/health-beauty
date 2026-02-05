@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/Button';
 
 interface CalendarProps {
     onSelectDate: (date: string) => void;
+    filledDates?: string[];
 }
 
-export const Calendar: React.FC<CalendarProps> = ({ onSelectDate }) => {
+export const Calendar: React.FC<CalendarProps> = ({ onSelectDate, filledDates = [] }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
 
     const getDaysInMonth = (year: number, month: number) => {
@@ -70,6 +71,7 @@ export const Calendar: React.FC<CalendarProps> = ({ onSelectDate }) => {
 
                     const dateStr = formatDate(date);
                     const isToday = dateStr === formatDate(new Date());
+                    const isFilled = filledDates.includes(dateStr);
 
                     return (
                         <button
@@ -78,20 +80,31 @@ export const Calendar: React.FC<CalendarProps> = ({ onSelectDate }) => {
                             style={{
                                 aspectRatio: '1/1',
                                 display: 'flex',
+                                flexDirection: 'column',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 borderRadius: '50%',
-                                border: 'none',
-                                background: isToday ? 'var(--primary)' : 'transparent',
-                                color: isToday ? 'white' : 'var(--text-main)',
+                                border: isToday ? '2px solid var(--primary)' : 'none',
+                                background: 'transparent',
+                                color: 'var(--text-main)',
                                 cursor: 'pointer',
                                 transition: 'background 0.2s',
                                 fontWeight: isToday ? 600 : 400,
-                                fontSize: '0.9rem'
+                                fontSize: '0.9rem',
+                                position: 'relative'
                             }}
-                            className="hover:bg-pink-50"
+                            className="hover:bg-blue-50 relative"
                         >
-                            {date.getDate()}
+                            <span style={{ zIndex: 1 }}>{date.getDate()}</span>
+                            {isFilled && (
+                                <div style={{
+                                    width: '6px',
+                                    height: '6px',
+                                    borderRadius: '50%',
+                                    backgroundColor: 'var(--success)', // Green dot
+                                    marginTop: '2px'
+                                }}></div>
+                            )}
                         </button>
                     );
                 })}

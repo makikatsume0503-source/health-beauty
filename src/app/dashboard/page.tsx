@@ -3,21 +3,32 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 // Card import removed
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { Calendar } from '@/components/Calendar/Calendar';
+import { collection, getDocs, query } from 'firebase/firestore';
 
 export default function Dashboard() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [filledDates, setFilledDates] = useState<string[]>([]);
     const router = useRouter();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 setUser(user);
+                // Fetch filled dates
+                try {
+                    const q = query(collection(db, 'users', user.uid, 'daily_logs'));
+                    const snapshot = await getDocs(q);
+                    const dates = snapshot.docs.map(doc => doc.id);
+                    setFilledDates(dates);
+                } catch (e) {
+                    console.error("Error fetching logs:", e);
+                }
             } else {
                 // Guest Preview
                 setUser({ displayName: 'Guest (Preview)' });
@@ -46,7 +57,7 @@ export default function Dashboard() {
                 <p className="mb-4" style={{ color: 'var(--text-light)' }}>
                     記録したい日付を選択してください。
                 </p>
-                <Calendar onSelectDate={handleSelectDate} />
+                <Calendar onSelectDate={handleSelectDate} filledDates={filledDates} />
             </div>
 
             <div style={{ marginTop: '3rem', textAlign: 'center' }}>
