@@ -224,14 +224,18 @@ export default function DailyLogPage({ targetUserId }: DailyLogProps) {
                         />
                         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 4px', marginTop: '4px' }}>
                             {[1, 2, 3, 4, 5].map((num) => (
-                                <div key={num} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div key={num} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '40px' }}>
                                     <div style={{ width: '1px', height: '6px', backgroundColor: '#9CA3AF', marginBottom: '2px' }}></div>
                                     <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#6B7280' }}>{num}</span>
                                 </div>
                             ))}
                         </div>
-                        <div className="flex justify-between text-xs text-gray-400 px-1">
-                            <span>悪い</span><span></span><span>普通</span><span></span><span>良い</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 4px', marginTop: '2px' }}>
+                            {['悪い', '', '普通', '', '良い'].map((text, i) => (
+                                <div key={i} style={{ width: '40px', textAlign: 'center', fontSize: '0.65rem', color: '#9CA3AF' }}>
+                                    {text}
+                                </div>
+                            ))}
                         </div>
                     </div>
 
@@ -246,14 +250,18 @@ export default function DailyLogPage({ targetUserId }: DailyLogProps) {
                         />
                         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 4px', marginTop: '4px' }}>
                             {[1, 2, 3, 4, 5].map((num) => (
-                                <div key={num} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div key={num} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '40px' }}>
                                     <div style={{ width: '1px', height: '6px', backgroundColor: '#9CA3AF', marginBottom: '2px' }}></div>
                                     <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#6B7280' }}>{num}</span>
                                 </div>
                             ))}
                         </div>
-                        <div className="flex justify-between text-xs text-gray-400 px-1">
-                            <span>落ち込む</span><span></span><span>普通</span><span></span><span>Happy!</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 4px', marginTop: '2px' }}>
+                            {['落ち込む', '', '普通', '', 'Happy!'].map((text, i) => (
+                                <div key={i} style={{ width: '40px', textAlign: 'center', fontSize: '0.65rem', color: '#9CA3AF', whiteSpace: 'nowrap' }}>
+                                    {text}
+                                </div>
+                            ))}
                         </div>
                     </div>
 
