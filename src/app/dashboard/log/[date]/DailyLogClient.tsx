@@ -87,7 +87,9 @@ export default function DailyLogPage({ targetUserId }: DailyLogProps) {
                         physical: condition.physical,
                         mental: condition.mental,
                         updatedAt: serverTimestamp()
-                    }
+                    },
+                    hasUnreadUpdate: true,
+                    lastUpdatedAt: serverTimestamp()
                 }, { merge: true });
             }
             alert('保存しました！');

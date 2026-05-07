@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-const ADMIN_EMAILS = ['maki.katsume.0503@gmail.com'];
+const ADMIN_EMAILS = ['maki.katsume.0503@gmail.com', 'admin@test.com'];
 
 export default function AdminGuard({ children }: { children: React.ReactNode }) {
     const [authorized, setAuthorized] = useState(false);
